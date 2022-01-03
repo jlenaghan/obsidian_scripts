@@ -12,21 +12,22 @@ BASE_DIR = home+"/Dropbox/"+vault+"/"
 
 def convert_path_to_links(_path):
     # Return None if not a valid link
-    if _path.endswith('todo.md') or _path.endswith('recent_files.md') or _path.endswith('unlinked.md'):
+    if _path.endswith('todos.md') or _path.endswith('recent_files.md') or _path.endswith('unlinked.md'):
         return None
     if not _path.endswith('.md'):
         return None
     _link = _path.split('/')[-1]
     _link = _link.replace('.md','')
     return "[[" + _link + "]]"
+
 def get_recent_files(num_days_lookback):
     now = dt.datetime.now()
     ago = now-dt.timedelta(days=num_days_lookback)
-    modified_files_list = []    
-    for root, dirs,files in os.walk(BASE_DIR):  
+    modified_files_list = []
+    for root, dirs,files in os.walk(BASE_DIR):
         for fname in files:
             path = os.path.join(root, fname)
-            st = os.stat(path)    
+            st = os.stat(path)
             mtime = dt.datetime.fromtimestamp(st.st_mtime)
             if mtime > ago:
                 modified_files_list.append(path)
@@ -44,7 +45,7 @@ def write_recent_files(num_days_lookback):
 
 def write_todos():
     todos = []
-    for root, dirs,files in os.walk(BASE_DIR):  
+    for root, dirs,files in os.walk(BASE_DIR):
         for fname in files:
             path = os.path.join(root, fname)
             link = convert_path_to_links(path)
@@ -54,7 +55,7 @@ def write_todos():
                 for line in in_file:
                     line = line.strip()
                     if line.find('- [ ]') != -1 :
-                        todos.append(line + '\t' + link) 
+                        todos.append(line + '\t' + link)
     f = open(BASE_DIR + 'todos.md','w')
     todos.sort()
     for todo in todos:
