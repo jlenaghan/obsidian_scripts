@@ -8,7 +8,7 @@ mode = sys.argv[2]
 lookback = int(sys.argv[3])
 
 home = os.path.expanduser("~")
-BASE_DIR = home+"/Dropbox/"+vault+"/"
+BASE_DIR = home+"/Vaults/"+vault+"/"
 
 def convert_path_to_links(_path):
     # Return None if not a valid link
