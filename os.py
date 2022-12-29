@@ -12,7 +12,8 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("-v","--vault", help="Name of the vault", default="homeGyaan")
 parser.add_argument("--todo", help="Write todos to file", action="store_true")
-parser.add_argument("-d","--days", help="Number of days to look back")
+parser.add_argument("--recent", help="Write recent files to file", action="store_true")
+parser.add_argument("-d","--days", help="Number of days to look back", default=7)
 
 args = parser.parse_args()
 
@@ -47,6 +48,7 @@ def get_recent_files(num_days_lookback):
 
 def write_recent_files(num_days_lookback):
     f = open(BASE_DIR + 'recent_files.md','w')
+    print('Writing recent files with a',str(num_days_lookback),'day lookback to file : ',BASE_DIR + 'recent_files.md')
     modified_files_list = get_recent_files(num_days_lookback)
     for file in modified_files_list:
         link = convert_path_to_links(file)
@@ -119,7 +121,9 @@ def write_orphan_files():
 if '__main__' == __name__:
     if args.todo:
         write_todos()
-    else:
+    if args.recent:
+        write_recent_files(int(args.days))
+    if not args.todo and not args.recent:
         print('Please specific action to take on vault. Use --help for more info')
 
 #if mode == "recent":
